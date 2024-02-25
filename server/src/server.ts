@@ -1,15 +1,12 @@
-import { PrismaClient } from "@prisma/client";
+import app from "./app";
+import dotenv from "dotenv";
 
-const prisma = new PrismaClient();
+dotenv.config();
 
-async function main() {}
+const PORT = Number(process.env.WEB_PORT);
 
-main()
-    .then(async () => {
-        await prisma.$disconnect();
-    })
-    .catch(async (e) => {
-        console.error(e);
-        await prisma.$disconnect();
-        process.exit(1);
-    });
+if (isNaN(PORT)) {
+    throw new Error("Missing or invalid WEB_PORT environment variable.");
+}
+
+app.listen(PORT, () => {});
