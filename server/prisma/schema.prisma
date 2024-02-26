@@ -16,15 +16,16 @@ datasource db {
 model LedState {
     id    Int    @id @default(autoincrement())
     state String @unique
-    led   LED?
-    log   Log?
+    led   Led[]
+    log   Log[]
 }
 
-model LED {
+model Led {
     id               Int               @id @default(autoincrement())
-    ledStateId       Int               @unique
+    ledStateId       Int
     ledState         LedState          @relation(fields: [ledStateId], references: [id])
     ledConfiguration LedConfiguration?
+    log              Log[]
 }
 
 model LedConfiguration {
@@ -32,12 +33,14 @@ model LedConfiguration {
     blink_rate Float
     gpio_pin   Int   @unique
     ledId      Int   @unique
-    led        LED   @relation(fields: [ledId], references: [id])
+    led        Led   @relation(fields: [ledId], references: [id])
 }
 
 model Log {
     id         Int      @id @default(autoincrement())
     timestamp  DateTime
-    ledStateId Int      @unique
+    ledId      Int
+    ledStateId Int
+    led        Led      @relation(fields: [ledId], references: [id])
     ledState   LedState @relation(fields: [ledStateId], references: [id])
 }
