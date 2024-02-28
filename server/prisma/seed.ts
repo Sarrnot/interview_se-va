@@ -1,17 +1,18 @@
 import { PrismaClient } from "@prisma/client";
+import LedState from "../src/constants/LedState";
 const prisma = new PrismaClient();
 
 async function main() {
     await prisma.ledState.createMany({
         data: [
             {
-                state: "ON",
+                state: LedState.on,
             },
             {
-                state: "OFF",
+                state: LedState.off,
             },
             {
-                state: "BLINKING",
+                state: LedState.blinking,
             },
         ],
     });
